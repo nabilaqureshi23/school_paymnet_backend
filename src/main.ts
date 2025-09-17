@@ -9,9 +9,13 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   app.enableCors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true,               // allow cookies/auth headers
-  });
+  origin: [
+    "http://localhost:5173", 
+    "https://school-payments-frontend-qidx.onrender.com"
+  ],
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+});
   await app.listen(port);
   console.log(`🚀 Server running on http://localhost:${port}`);
  
