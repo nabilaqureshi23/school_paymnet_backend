@@ -13,9 +13,11 @@ async function bootstrap() {
     "http://localhost:5173", 
     "https://school-payments-frontend-qidx.onrender.com"
   ],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: "Content-Type, Authorization",
   credentials: true,
 });
+
   await app.listen(port);
   console.log(`🚀 Server running on http://localhost:${port}`);
  
