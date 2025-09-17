@@ -1,0 +1,139 @@
+{
+  "info": {
+    "name": "School Payment System (with Auth)",
+    "_postman_id": "b8f2e3c0-1234-5678-90ab-authdemo",
+    "description": "Test School Payment System backend with JWT authentication",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@test.com\",\n  \"password\": \"pass123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.access_token) {",
+                  "  pm.collectionVariables.set('token', res.access_token);",
+                  "  console.log('✅ Token saved to collection variable:', res.access_token);",
+                  "} else {",
+                  "  console.log('⚠️ Login failed, token not found');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@test.com\",\n  \"password\": \"pass123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"school_id\": \"65b0e6293e9f76a9694d84b4\",\n  \"amount\": 100,\n  \"custom_order_id\": \"ORDER-123\",\n  \"student_info\": {\n    \"name\": \"John Doe\",\n    \"id\": \"ST123\",\n    \"email\": \"john@example.com\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/create-payment", "host": ["{{baseUrl}}"], "path": ["create-payment"] }
+          }
+        },
+        {
+          "name": "Simulate Webhook",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": 200,\n  \"order_info\": {\n    \"order_id\": \"COLLECT123\",\n    \"order_amount\": 100,\n    \"transaction_amount\": 100,\n    \"gateway\": \"PhonePe\",\n    \"bank_reference\": \"YESBNK222\",\n    \"status\": \"success\",\n    \"payment_mode\": \"upi\",\n    \"payemnt_details\": \"success@ybl\",\n    \"Payment_message\": \"payment success\",\n    \"payment_time\": \"2025-04-23T08:14:21.945+00:00\",\n    \"error_message\": \"NA\"\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/webhook", "host": ["{{baseUrl}}"], "path": ["webhook"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Get All Transactions",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/transactions?page=1&limit=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"],
+              "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "5" }]
+            }
+          }
+        },
+        {
+          "name": "Get Transactions by School",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/transactions/school/65b0e6293e9f76a9694d84b4",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "school", "65b0e6293e9f76a9694d84b4"]
+            }
+          }
+        },
+        {
+          "name": "Get Transaction Status",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/transaction-status/ORDER-123",
+              "host": ["{{baseUrl}}"],
+              "path": ["transaction-status", "ORDER-123"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
