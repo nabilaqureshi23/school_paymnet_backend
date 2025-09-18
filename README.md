@@ -41,7 +41,7 @@ https://school-paymnet-backend.onrender.com
 ### 1. Clone Repo
 
 ```bash
-git clone https://github.com/nabilaqureshi23/school_paymnet_backend
+git clone https://github.com/nabilaqureshi23/school_paymnet_backend.git
 cd school-payment-system/backend
 ```
 
