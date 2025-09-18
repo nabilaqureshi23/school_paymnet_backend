@@ -10,8 +10,8 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   app.enableCors({
   origin: [
-    "http://localhost:5173", 
-    "https://school-payments-frontend-qidx.onrender.com"
+    "https://school-payments-frontend-qidx.onrender.com",
+    "http://localhost:5173"
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
   allowedHeaders: "Content-Type, Authorization",
