@@ -274,12 +274,6 @@ Authorization: Bearer <access_token>
 ---
 
 <p align="center">
-  👉 This README is <strong>production & assessment ready</strong>.
-</p>
-
----
-
-<p align="center">
   <strong>Built with ❤️ for School Payment Management</strong>
 </p>
 
